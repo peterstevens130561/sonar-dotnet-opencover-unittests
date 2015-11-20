@@ -4,13 +4,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.sonar.api.SonarPlugin;
+import org.sonar.api.scan.filesystem.PathResolver;
 
 import com.stevpet.sonar.plugins.common.commandexecutor.DefaultProcessLock;
 import com.stevpet.sonar.plugins.common.commandexecutor.LockedWindowsCommandLineExecutor;
 import com.stevpet.sonar.plugins.dotnet.mscover.DefaultMsCoverConfiguration;
-import com.stevpet.sonar.plugins.dotnet.mscover.MsCoverConfiguration;
 import com.stevpet.sonar.plugins.dotnet.mscover.coverageparsers.opencovercoverageparser.OpenCoverCoverageParser;
 import com.stevpet.sonar.plugins.dotnet.mscover.coverageparsers.opencovercoverageparser.OpenCoverFileNamesParser;
+import com.stevpet.sonar.plugins.dotnet.mscover.coveragereader.DefaultCoverageReader;
 import com.stevpet.sonar.plugins.dotnet.mscover.coveragesaver.defaultsaver.DefaultBranchFileCoverageSaver;
 import com.stevpet.sonar.plugins.dotnet.mscover.coveragesaver.defaultsaver.DefaultCoverageSaver;
 import com.stevpet.sonar.plugins.dotnet.mscover.coveragesaver.defaultsaver.DefaultLineFileCoverageSaver;
@@ -28,7 +29,6 @@ import com.stevpet.sonar.plugins.dotnet.mscover.vstest.command.VSTestCommand;
 import com.stevpet.sonar.plugins.dotnet.mscover.vstest.results.VsTestEnvironment;
 import com.stevpet.sonar.plugins.dotnet.mscover.vstest.runner.DefaultAssembliesFinder;
 import com.stevpet.sonar.plugins.dotnet.mscover.vstest.runner.VsTestConfigFinder;
-import com.stevpet.sonar.plugins.dotnet.mscover.workflow.DefaultTestResultsSaver;
 import com.stevpet.sonar.plugins.dotnet.mscover.workflow.UnitTestBatchData;
 import com.stevpet.sonar.plugins.dotnet.utils.vstowrapper.implementation.SimpleMicrosoftWindowsEnvironment;
 
@@ -39,6 +39,7 @@ public class OpenCoverPlugin extends SonarPlugin {
         List exported=Arrays.asList(
 
         		VsTestEnvironment.class,
+        		PathResolver.class,
         		SimpleMicrosoftWindowsEnvironment.class,
         		DefaultMsCoverConfiguration.class,
         		OpenCoverCoverageRunner.class,
@@ -47,6 +48,8 @@ public class OpenCoverPlugin extends SonarPlugin {
         		DefaultResourceResolver.class,
         		DefaultTestResultsParser.class,
         		DefaultCoverageSaver.class,
+                OpenCoverCoverageParser.class,
+        		DefaultCoverageReader.class,
         		OpenCoverTestResultsSaver.class,
         		DefaultTestResultsFormatter.class,
                 OpenCoverCommand.class,
@@ -61,9 +64,8 @@ public class OpenCoverPlugin extends SonarPlugin {
                 VSTestCommand.class,
                 DefaultLineFileCoverageSaver.class,
                 DefaultBranchFileCoverageSaver.class,
-                OpenCoverCoverageParser.class,
-                UnitTestBatchData.class,
-                OpenCoverSensor.class);
+                OpenCoverSensor.class,
+                UnitTestBatchData.class);
    
         return exported;
     }

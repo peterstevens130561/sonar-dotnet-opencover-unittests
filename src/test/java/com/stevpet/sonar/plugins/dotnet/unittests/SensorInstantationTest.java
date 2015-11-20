@@ -30,7 +30,6 @@ public class SensorInstantationTest {
 		
 	}
 	
-	@Test
 	public void instantiate() {
 		picoContainer.addComponent(DefaultFileSystem.class).addComponent(project);
 		Sensor sensor = picoContainer.getComponent(Sensor.class);		
