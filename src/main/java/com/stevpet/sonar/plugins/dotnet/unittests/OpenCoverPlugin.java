@@ -23,6 +23,7 @@ import com.stevpet.sonar.plugins.dotnet.mscover.testresultsbuilder.defaulttestre
 import com.stevpet.sonar.plugins.dotnet.mscover.testresultsbuilder.defaulttestresultsbuilder.SpecFlowScenarioMethodResolver;
 import com.stevpet.sonar.plugins.dotnet.mscover.testresultsbuilder.defaulttestresultsbuilder.SpecFlowTestResultsBuilder;
 import com.stevpet.sonar.plugins.dotnet.mscover.testrunner.opencover.OpenCoverCoverageRunner;
+import com.stevpet.sonar.plugins.dotnet.mscover.testrunner.opencover.OpenCoverCoverageRunnerBase;
 import com.stevpet.sonar.plugins.dotnet.mscover.testrunner.vstest.VSTestStdOutParser;
 import com.stevpet.sonar.plugins.dotnet.mscover.testrunner.vstest.VsTestRunnerCommandBuilder;
 import com.stevpet.sonar.plugins.dotnet.mscover.vstest.command.VSTestCommand;
@@ -37,12 +38,10 @@ public class OpenCoverPlugin extends SonarPlugin {
     @Override
     public List getExtensions() {
         List exported=Arrays.asList(
-
         		VsTestEnvironment.class,
         		PathResolver.class,
         		SimpleMicrosoftWindowsEnvironment.class,
         		DefaultMsCoverConfiguration.class,
-        		OpenCoverCoverageRunner.class,
         		SpecFlowTestResultsBuilder.class,
         		OpenCoverFileNamesParser.class,
         		DefaultResourceResolver.class,
@@ -52,18 +51,11 @@ public class OpenCoverPlugin extends SonarPlugin {
         		DefaultCoverageReader.class,
         		OpenCoverTestResultsSaver.class,
         		DefaultTestResultsFormatter.class,
-                OpenCoverCommand.class,
                 SpecFlowScenarioMethodResolver.class,
-                DefaultProcessLock.class,
-                LockedWindowsCommandLineExecutor.class,
-                VsTestConfigFinder.class,
                 WindowsCodeCoverageCommand.class,
-                VSTestStdOutParser.class,
-                DefaultAssembliesFinder.class,
-                VsTestRunnerCommandBuilder.class,
-                VSTestCommand.class,
                 DefaultLineFileCoverageSaver.class,
                 DefaultBranchFileCoverageSaver.class,
+        		OpenCoverCoverageRunner.class,
                 OpenCoverSensor.class,
                 UnitTestBatchData.class);
    
