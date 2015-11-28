@@ -46,15 +46,15 @@ public class OpenCoverPlugin extends SonarPlugin {
         		SimpleMicrosoftWindowsEnvironment.class,
         		DefaultMsCoverConfiguration.class,       		
 
-                WindowsCodeCoverageCommand.class, // should not be needed....
-
         		OpenCoverCoverageRunner.class,
         		OpenCoverCoverageReader.class,
         		OpenCoverCoverageSaver.class,
         		SpeFlowTestResultsBuilder.class,
         		OpenCoverTestResultsSaver.class,
-                OpenCoverSensor.class,
-                UnitTestBatchData.class);
+                UnitTestBatchData.class,
+        		
+                OpenCoverSensor.class
+                );
    
         return exported;
     }
