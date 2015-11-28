@@ -112,7 +112,7 @@ public class OpenCoverSensor implements Sensor {
         
         SonarCoverage sonarCoverage = new SonarCoverage();
         reader.read(sonarCoverage, coverageFile);
-        coverageSaver.save(sonarCoverage);
+        coverageSaver.save(context,sonarCoverage);
 
         if (testResultsFile != null) {
             ProjectUnitTestResults testResults = testResultsBuilder.parse(testResultsFile, coverageFile);

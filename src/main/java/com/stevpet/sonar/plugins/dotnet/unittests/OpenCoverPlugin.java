@@ -16,6 +16,7 @@ import com.stevpet.sonar.plugins.dotnet.mscover.coveragereader.OpenCoverCoverage
 import com.stevpet.sonar.plugins.dotnet.mscover.coveragesaver.defaultsaver.DefaultBranchFileCoverageSaver;
 import com.stevpet.sonar.plugins.dotnet.mscover.coveragesaver.defaultsaver.CoverageSaverBase;
 import com.stevpet.sonar.plugins.dotnet.mscover.coveragesaver.defaultsaver.DefaultLineFileCoverageSaver;
+import com.stevpet.sonar.plugins.dotnet.mscover.coveragesaver.defaultsaver.OpenCoverCoverageSaver;
 import com.stevpet.sonar.plugins.dotnet.mscover.coveragetoxmlconverter.WindowsCodeCoverageCommand;
 import com.stevpet.sonar.plugins.dotnet.mscover.opencover.command.OpenCoverCommand;
 import com.stevpet.sonar.plugins.dotnet.mscover.resourceresolver.DefaultResourceResolver;
@@ -47,15 +48,13 @@ public class OpenCoverPlugin extends SonarPlugin {
         		OpenCoverFileNamesParser.class,
         		DefaultResourceResolver.class,
         		DefaultTestResultsParser.class,
-        		CoverageSaverBase.class,
         		OpenCoverTestResultsSaver.class,
         		DefaultTestResultsFormatter.class,
                 SpecFlowScenarioMethodResolver.class,
                 WindowsCodeCoverageCommand.class,
-                DefaultLineFileCoverageSaver.class,
-                DefaultBranchFileCoverageSaver.class,
         		OpenCoverCoverageRunner.class,
         		OpenCoverCoverageReader.class,
+        		OpenCoverCoverageSaver.class,
                 OpenCoverSensor.class,
                 UnitTestBatchData.class);
    
