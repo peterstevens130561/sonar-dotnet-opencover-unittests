@@ -11,9 +11,10 @@ import com.stevpet.sonar.plugins.common.commandexecutor.LockedWindowsCommandLine
 import com.stevpet.sonar.plugins.dotnet.mscover.DefaultMsCoverConfiguration;
 import com.stevpet.sonar.plugins.dotnet.mscover.coverageparsers.opencovercoverageparser.OpenCoverCoverageParser;
 import com.stevpet.sonar.plugins.dotnet.mscover.coverageparsers.opencovercoverageparser.OpenCoverFileNamesParser;
-import com.stevpet.sonar.plugins.dotnet.mscover.coveragereader.DefaultCoverageReader;
+import com.stevpet.sonar.plugins.dotnet.mscover.coveragereader.CoverageReaderBase;
+import com.stevpet.sonar.plugins.dotnet.mscover.coveragereader.OpenCoverCoverageReader;
 import com.stevpet.sonar.plugins.dotnet.mscover.coveragesaver.defaultsaver.DefaultBranchFileCoverageSaver;
-import com.stevpet.sonar.plugins.dotnet.mscover.coveragesaver.defaultsaver.DefaultCoverageSaver;
+import com.stevpet.sonar.plugins.dotnet.mscover.coveragesaver.defaultsaver.CoverageSaverBase;
 import com.stevpet.sonar.plugins.dotnet.mscover.coveragesaver.defaultsaver.DefaultLineFileCoverageSaver;
 import com.stevpet.sonar.plugins.dotnet.mscover.coveragetoxmlconverter.WindowsCodeCoverageCommand;
 import com.stevpet.sonar.plugins.dotnet.mscover.opencover.command.OpenCoverCommand;
@@ -46,9 +47,7 @@ public class OpenCoverPlugin extends SonarPlugin {
         		OpenCoverFileNamesParser.class,
         		DefaultResourceResolver.class,
         		DefaultTestResultsParser.class,
-        		DefaultCoverageSaver.class,
-                OpenCoverCoverageParser.class,
-        		DefaultCoverageReader.class,
+        		CoverageSaverBase.class,
         		OpenCoverTestResultsSaver.class,
         		DefaultTestResultsFormatter.class,
                 SpecFlowScenarioMethodResolver.class,
@@ -56,6 +55,7 @@ public class OpenCoverPlugin extends SonarPlugin {
                 DefaultLineFileCoverageSaver.class,
                 DefaultBranchFileCoverageSaver.class,
         		OpenCoverCoverageRunner.class,
+        		OpenCoverCoverageReader.class,
                 OpenCoverSensor.class,
                 UnitTestBatchData.class);
    
