@@ -65,14 +65,14 @@ public class OpenCoverSensor implements Sensor {
 	private CoverageReader reader;
 	private CoverageSaver coverageSaver;
 	private TestResultsBuilder testResultsBuilder;
-	private OpenCoverTestResultsSaver testResultsSaver;
+	private OpenCoverTestResultsSaverBase testResultsSaver;
 
 
 	public OpenCoverSensor(FileSystem fileSystem,MsCoverConfiguration configuration,
 			UnitTestBatchData unitTestBatchData,
 			TestRunner testRunner, 
 			TestResultsBuilder testResultsBuilder, 
-			OpenCoverTestResultsSaver testResultsSaver,
+			OpenCoverTestResultsSaverBase testResultsSaver,
 			CoverageReader coverageReader,
 			CoverageSaver coverageSaver) {
 		this.fileSystem=fileSystem;

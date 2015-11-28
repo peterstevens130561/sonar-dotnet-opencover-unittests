@@ -30,7 +30,7 @@ public class SensorAnalyzeTest {
 	@Mock private Project module;
 	@Mock private SensorContext context;
 	@Mock private TestResultsBuilder testResultsBuilder;
-	@Mock private OpenCoverTestResultsSaver testResultsSaver;
+	@Mock private OpenCoverTestResultsSaverBase testResultsSaver;
 	@Mock private CoverageReader coverageReader;
 	@Mock private CoverageSaver coverageSaver;
 	@Before
