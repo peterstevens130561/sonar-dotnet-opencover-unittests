@@ -22,8 +22,9 @@ import com.stevpet.sonar.plugins.dotnet.mscover.opencover.command.OpenCoverComma
 import com.stevpet.sonar.plugins.dotnet.mscover.resourceresolver.DefaultResourceResolver;
 import com.stevpet.sonar.plugins.dotnet.mscover.saver.test.DefaultTestResultsFormatter;
 import com.stevpet.sonar.plugins.dotnet.mscover.testresultsbuilder.defaulttestresultsbuilder.DefaultTestResultsParser;
+import com.stevpet.sonar.plugins.dotnet.mscover.testresultsbuilder.defaulttestresultsbuilder.SpeFlowTestResultsBuilder;
 import com.stevpet.sonar.plugins.dotnet.mscover.testresultsbuilder.defaulttestresultsbuilder.SpecFlowScenarioMethodResolver;
-import com.stevpet.sonar.plugins.dotnet.mscover.testresultsbuilder.defaulttestresultsbuilder.SpecFlowTestResultsBuilder;
+import com.stevpet.sonar.plugins.dotnet.mscover.testresultsbuilder.defaulttestresultsbuilder.SpecFlowTestResultsBuilderBase;
 import com.stevpet.sonar.plugins.dotnet.mscover.testrunner.opencover.OpenCoverCoverageRunner;
 import com.stevpet.sonar.plugins.dotnet.mscover.testrunner.opencover.OpenCoverCoverageRunnerBase;
 import com.stevpet.sonar.plugins.dotnet.mscover.testrunner.vstest.VSTestStdOutParser;
@@ -44,17 +45,14 @@ public class OpenCoverPlugin extends SonarPlugin {
         		PathResolver.class,
         		SimpleMicrosoftWindowsEnvironment.class,
         		DefaultMsCoverConfiguration.class,
-        		SpecFlowTestResultsBuilder.class,
-        		OpenCoverFileNamesParser.class,
-        		DefaultResourceResolver.class,
-        		DefaultTestResultsParser.class,
+        		DefaultResourceResolver.class,       		
         		OpenCoverTestResultsSaver.class,
         		DefaultTestResultsFormatter.class,
-                SpecFlowScenarioMethodResolver.class,
-                WindowsCodeCoverageCommand.class,
+                WindowsCodeCoverageCommand.class, // should not be needed....
         		OpenCoverCoverageRunner.class,
         		OpenCoverCoverageReader.class,
         		OpenCoverCoverageSaver.class,
+        		SpeFlowTestResultsBuilder.class,
                 OpenCoverSensor.class,
                 UnitTestBatchData.class);
    
