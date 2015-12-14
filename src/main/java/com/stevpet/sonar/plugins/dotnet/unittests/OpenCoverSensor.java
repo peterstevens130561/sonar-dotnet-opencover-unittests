@@ -31,14 +31,6 @@ import org.sonar.api.batch.SensorContext;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.resources.Project;
 
-
-
-
-
-
-
-
-
 import com.stevpet.sonar.plugins.dotnet.mscover.MsCoverConfiguration;
 import com.stevpet.sonar.plugins.dotnet.mscover.coveragereader.CoverageReader;
 import com.stevpet.sonar.plugins.dotnet.mscover.coveragesaver.CoverageSaver;
@@ -70,58 +62,61 @@ public class OpenCoverSensor implements Sensor {
 	private OpenCoverTestResultsSaverBase testResultsSaver;
 	private MicrosoftWindowsEnvironment microsoftWindowsEnvironment;
 
-
-	public OpenCoverSensor(FileSystem fileSystem,MsCoverConfiguration configuration,
-			UnitTestCache unitTestBatchData,
-			TestRunner testRunner, 
-			TestResultsBuilder testResultsBuilder, 
+	public OpenCoverSensor(FileSystem fileSystem,
+			MsCoverConfiguration configuration,
+			UnitTestCache unitTestBatchData, TestRunner testRunner,
+			TestResultsBuilder testResultsBuilder,
 			OpenCoverTestResultsSaverBase testResultsSaver,
-			CoverageReader coverageReader,
-			CoverageSaver coverageSaver, MicrosoftWindowsEnvironment microsoftWindowsEnvironment) {
-		this.fileSystem=fileSystem;
+			CoverageReader coverageReader, CoverageSaver coverageSaver,
+			MicrosoftWindowsEnvironment microsoftWindowsEnvironment) {
+		this.fileSystem = fileSystem;
 		this.configuration = configuration;
 		this.cache = unitTestBatchData;
 		this.testRunner = testRunner;
 		this.testResultsBuilder = testResultsBuilder;
-		this.testResultsSaver=testResultsSaver;
-		this.reader=coverageReader;
-		this.coverageSaver=coverageSaver;
+		this.testResultsSaver = testResultsSaver;
+		this.reader = coverageReader;
+		this.coverageSaver = coverageSaver;
 		this.microsoftWindowsEnvironment = microsoftWindowsEnvironment;
-				;
+		;
 	}
+
 	private static final Logger LOG = LoggerFactory
 			.getLogger(OpenCoverSensor.class);
 
-
-
-
 	@Override
 	public boolean shouldExecuteOnProject(Project project) {
-        return project.isModule() &&  configuration.runOpenCover() && microsoftWindowsEnvironment.hasUnitTestSourceFiles();
+		return project.isModule() && configuration.runOpenCover()
+				&& microsoftWindowsEnvironment.hasUnitTestSourceFiles();
 	}
 
 	@Override
 	public void analyse(Project module, SensorContext context) {
 		File testResultsFile;
 		File coverageFile;
-		if(!cache.hasRun()) {
-			coverageFile=new File(fileSystem.workDir(),"coverage.xml");
+		SonarCoverage sonarCoverage;
+		if (!cache.hasRun()) {
+			coverageFile = new File(fileSystem.workDir(), "coverage.xml");
 			testRunner.setCoverageFile(coverageFile);
 			testRunner.execute();
-            testResultsFile = testRunner.getTestResultsFile();
-            cache.setHasRun(coverageFile, testResultsFile);
-            
-		}
-        coverageFile = cache.getTestCoverage();
-        testResultsFile = cache.getTestResults();
-        
-        SonarCoverage sonarCoverage = new SonarCoverage();
-        reader.read(sonarCoverage, coverageFile);
-        coverageSaver.save(context,sonarCoverage);
+			testResultsFile = testRunner.getTestResultsFile();
 
-        if (testResultsFile != null) {
-            ProjectUnitTestResults testResults = testResultsBuilder.parse(testResultsFile, coverageFile);
-            testResultsSaver.save(context,testResults);
-        }
+			sonarCoverage = new SonarCoverage();
+			reader.read(sonarCoverage, coverageFile);
+			cache.setSonarCoverage(sonarCoverage);
+			cache.setHasRun(coverageFile, testResultsFile);
+		} else {
+			sonarCoverage = cache.getSonarCoverage();
+			testResultsFile = cache.getTestResults();
+			coverageFile = cache.getTestCoverage();
+		}
+
+		coverageSaver.save(context, sonarCoverage);
+
+		if (testResultsFile != null) {
+			ProjectUnitTestResults testResults = testResultsBuilder.parse(
+					testResultsFile, coverageFile);
+			testResultsSaver.save(context, testResults);
+		}
 	}
 }
