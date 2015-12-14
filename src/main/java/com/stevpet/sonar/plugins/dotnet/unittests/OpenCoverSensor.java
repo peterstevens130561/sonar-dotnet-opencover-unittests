@@ -37,15 +37,17 @@ import org.sonar.api.resources.Project;
 
 
 
+
+
 import com.stevpet.sonar.plugins.dotnet.mscover.MsCoverConfiguration;
 import com.stevpet.sonar.plugins.dotnet.mscover.coveragereader.CoverageReader;
 import com.stevpet.sonar.plugins.dotnet.mscover.coveragesaver.CoverageSaver;
 import com.stevpet.sonar.plugins.dotnet.mscover.model.sonar.SonarCoverage;
 import com.stevpet.sonar.plugins.dotnet.mscover.testresultsbuilder.ProjectUnitTestResults;
 import com.stevpet.sonar.plugins.dotnet.mscover.testresultsbuilder.TestResultsBuilder;
-import com.stevpet.sonar.plugins.dotnet.mscover.testresultssaver.TestResultsSaver;
 import com.stevpet.sonar.plugins.dotnet.mscover.testrunner.TestRunner;
-import com.stevpet.sonar.plugins.dotnet.mscover.workflow.UnitTestBatchData;
+import com.stevpet.sonar.plugins.dotnet.mscover.workflow.UnitTestCache;
+import com.stevpet.sonar.plugins.dotnet.utils.vstowrapper.MicrosoftWindowsEnvironment;
 
 /**
  * ProjectBuilder for dotnet projects
@@ -59,22 +61,23 @@ import com.stevpet.sonar.plugins.dotnet.mscover.workflow.UnitTestBatchData;
 public class OpenCoverSensor implements Sensor {
 
 	private MsCoverConfiguration configuration;
-	private UnitTestBatchData cache;
+	private UnitTestCache cache;
 	private TestRunner testRunner;
 	private FileSystem fileSystem;
 	private CoverageReader reader;
 	private CoverageSaver coverageSaver;
 	private TestResultsBuilder testResultsBuilder;
 	private OpenCoverTestResultsSaverBase testResultsSaver;
+	private MicrosoftWindowsEnvironment microsoftWindowsEnvironment;
 
 
 	public OpenCoverSensor(FileSystem fileSystem,MsCoverConfiguration configuration,
-			UnitTestBatchData unitTestBatchData,
+			UnitTestCache unitTestBatchData,
 			TestRunner testRunner, 
 			TestResultsBuilder testResultsBuilder, 
 			OpenCoverTestResultsSaverBase testResultsSaver,
 			CoverageReader coverageReader,
-			CoverageSaver coverageSaver) {
+			CoverageSaver coverageSaver, MicrosoftWindowsEnvironment microsoftWindowsEnvironment) {
 		this.fileSystem=fileSystem;
 		this.configuration = configuration;
 		this.cache = unitTestBatchData;
@@ -83,6 +86,7 @@ public class OpenCoverSensor implements Sensor {
 		this.testResultsSaver=testResultsSaver;
 		this.reader=coverageReader;
 		this.coverageSaver=coverageSaver;
+		this.microsoftWindowsEnvironment = microsoftWindowsEnvironment;
 				;
 	}
 	private static final Logger LOG = LoggerFactory
@@ -93,7 +97,7 @@ public class OpenCoverSensor implements Sensor {
 
 	@Override
 	public boolean shouldExecuteOnProject(Project project) {
-        return project.isModule() &&  configuration.runOpenCover();
+        return project.isModule() &&  configuration.runOpenCover() && microsoftWindowsEnvironment.hasUnitTestSourceFiles();
 	}
 
 	@Override
@@ -106,6 +110,7 @@ public class OpenCoverSensor implements Sensor {
 			testRunner.execute();
             testResultsFile = testRunner.getTestResultsFile();
             cache.setHasRun(coverageFile, testResultsFile);
+            
 		}
         coverageFile = cache.getTestCoverage();
         testResultsFile = cache.getTestResults();

@@ -1,12 +1,10 @@
 package com.stevpet.sonar.plugins.dotnet.unittests;
 
 import org.junit.Before;
-import org.junit.Test;
 import org.mockito.Mock;
 import org.picocontainer.DefaultPicoContainer;
 import org.sonar.api.SonarPlugin;
 import org.sonar.api.batch.Sensor;
-import org.sonar.api.batch.bootstrap.ProjectBuilder;
 import org.sonar.api.batch.fs.internal.DefaultFileSystem;
 import org.sonar.api.config.Settings;
 import org.sonar.api.resources.Project;

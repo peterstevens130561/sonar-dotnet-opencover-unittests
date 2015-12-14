@@ -16,15 +16,15 @@ import com.stevpet.sonar.plugins.dotnet.mscover.MsCoverConfiguration;
 import com.stevpet.sonar.plugins.dotnet.mscover.coveragereader.CoverageReader;
 import com.stevpet.sonar.plugins.dotnet.mscover.coveragesaver.CoverageSaver;
 import com.stevpet.sonar.plugins.dotnet.mscover.testresultsbuilder.TestResultsBuilder;
-import com.stevpet.sonar.plugins.dotnet.mscover.testresultssaver.TestResultsSaver;
 import com.stevpet.sonar.plugins.dotnet.mscover.testrunner.TestRunner;
-import com.stevpet.sonar.plugins.dotnet.mscover.workflow.UnitTestBatchData;
+import com.stevpet.sonar.plugins.dotnet.mscover.workflow.UnitTestCache;
+import com.stevpet.sonar.plugins.dotnet.utils.vstowrapper.MicrosoftWindowsEnvironment;
 
 public class SensorAnalyzeTest {
 
 	@Mock private FileSystem fileSystem ;
 	@Mock private MsCoverConfiguration configuration;
-	@Mock private UnitTestBatchData cache;
+	@Mock private UnitTestCache cache;
 	@Mock private TestRunner runner;
 	private OpenCoverSensor sensor;
 	@Mock private Project module;
@@ -33,12 +33,13 @@ public class SensorAnalyzeTest {
 	@Mock private OpenCoverTestResultsSaverBase testResultsSaver;
 	@Mock private CoverageReader coverageReader;
 	@Mock private CoverageSaver coverageSaver;
+	@Mock private MicrosoftWindowsEnvironment microsoftWindowsEnvironment;
 	@Before
 	public void before() {
 		org.mockito.MockitoAnnotations.initMocks(this);	
 
 		sensor = new OpenCoverSensor(fileSystem,configuration,cache,runner, 
-				testResultsBuilder, testResultsSaver,coverageReader,coverageSaver);
+				testResultsBuilder, testResultsSaver,coverageReader,coverageSaver,microsoftWindowsEnvironment);
 	}
 	
 	@Test
