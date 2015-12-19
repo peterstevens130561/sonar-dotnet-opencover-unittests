@@ -10,7 +10,7 @@ import com.stevpet.sonar.plugins.dotnet.mscover.coveragesaver.defaultsaver.OpenC
 import com.stevpet.sonar.plugins.dotnet.mscover.testresultsbuilder.defaulttestresultsbuilder.SpeFlowTestResultsBuilder;
 import com.stevpet.sonar.plugins.dotnet.mscover.testrunner.opencover.OpenCoverCoverageRunner;
 import com.stevpet.sonar.plugins.dotnet.mscover.workflow.DefaultUnitTestCache;
-import com.stevpet.sonar.plugins.dotnet.utils.vstowrapper.implementation.SimpleMicrosoftWindowsEnvironment;
+import com.stevpet.sonar.plugins.dotnet.utils.vstowrapper.implementation.DefaultMicrosoftWindowsEnvironment;
 
 public class OpenCoverPlugin extends SonarPlugin {
 
@@ -18,7 +18,7 @@ public class OpenCoverPlugin extends SonarPlugin {
     public List getExtensions() {
         List exported=Arrays.asList(
 
-        		SimpleMicrosoftWindowsEnvironment.class,
+        		DefaultMicrosoftWindowsEnvironment.class,
         		DefaultMsCoverConfiguration.class,       		
 
         		OpenCoverCoverageRunner.class,
