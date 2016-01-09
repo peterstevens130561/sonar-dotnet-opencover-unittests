@@ -16,6 +16,7 @@ import com.stevpet.sonar.plugins.dotnet.mscover.MsCoverConfiguration;
 import com.stevpet.sonar.plugins.dotnet.mscover.coveragereader.CoverageReader;
 import com.stevpet.sonar.plugins.dotnet.mscover.coveragesaver.CoverageSaver;
 import com.stevpet.sonar.plugins.dotnet.mscover.testresultsbuilder.TestResultsBuilder;
+import com.stevpet.sonar.plugins.dotnet.mscover.testresultssaver.VsTestTestResultsSaverBase;
 import com.stevpet.sonar.plugins.dotnet.mscover.testrunner.TestRunner;
 import com.stevpet.sonar.plugins.dotnet.mscover.workflow.UnitTestCache;
 import com.stevpet.sonar.plugins.dotnet.utils.vstowrapper.MicrosoftWindowsEnvironment;
@@ -30,7 +31,7 @@ public class SensorAnalyzeTest {
 	@Mock private Project module;
 	@Mock private SensorContext context;
 	@Mock private TestResultsBuilder testResultsBuilder;
-	@Mock private OpenCoverTestResultsSaverBase testResultsSaver;
+	@Mock private VsTestTestResultsSaverBase testResultsSaver;
 	@Mock private CoverageReader coverageReader;
 	@Mock private CoverageSaver coverageSaver;
 	@Mock private MicrosoftWindowsEnvironment microsoftWindowsEnvironment;

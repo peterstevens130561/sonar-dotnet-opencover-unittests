@@ -26,6 +26,7 @@ import java.io.File;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sonar.api.BatchExtension;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.batch.fs.FileSystem;
@@ -37,6 +38,7 @@ import com.stevpet.sonar.plugins.dotnet.mscover.coveragesaver.CoverageSaver;
 import com.stevpet.sonar.plugins.dotnet.mscover.model.sonar.SonarCoverage;
 import com.stevpet.sonar.plugins.dotnet.mscover.testresultsbuilder.ProjectUnitTestResults;
 import com.stevpet.sonar.plugins.dotnet.mscover.testresultsbuilder.TestResultsBuilder;
+import com.stevpet.sonar.plugins.dotnet.mscover.testresultssaver.VsTestTestResultsSaverBase;
 import com.stevpet.sonar.plugins.dotnet.mscover.testrunner.TestRunner;
 import com.stevpet.sonar.plugins.dotnet.mscover.workflow.UnitTestCache;
 import com.stevpet.sonar.plugins.dotnet.utils.vstowrapper.MicrosoftWindowsEnvironment;
@@ -50,7 +52,7 @@ import com.stevpet.sonar.plugins.dotnet.utils.vstowrapper.MicrosoftWindowsEnviro
  * @author stevpet
  * 
  */
-public class OpenCoverSensor implements Sensor {
+public class OpenCoverSensor implements Sensor, BatchExtension {
 
 	private MsCoverConfiguration configuration;
 	private UnitTestCache cache;
@@ -59,14 +61,14 @@ public class OpenCoverSensor implements Sensor {
 	private CoverageReader reader;
 	private CoverageSaver coverageSaver;
 	private TestResultsBuilder testResultsBuilder;
-	private OpenCoverTestResultsSaverBase testResultsSaver;
+	private VsTestTestResultsSaverBase testResultsSaver;
 	private MicrosoftWindowsEnvironment microsoftWindowsEnvironment;
 
 	public OpenCoverSensor(FileSystem fileSystem,
 			MsCoverConfiguration configuration,
 			UnitTestCache unitTestBatchData, TestRunner testRunner,
 			TestResultsBuilder testResultsBuilder,
-			OpenCoverTestResultsSaverBase testResultsSaver,
+			VsTestTestResultsSaverBase testResultsSaver,
 			CoverageReader coverageReader, CoverageSaver coverageSaver,
 			MicrosoftWindowsEnvironment microsoftWindowsEnvironment) {
 		this.fileSystem = fileSystem;
