@@ -27,7 +27,7 @@ public class SensorAnalyzeTest {
 	@Mock private MsCoverConfiguration configuration;
 	@Mock private UnitTestCache cache;
 	@Mock private TestRunner runner;
-	private OpenCoverSensor sensor;
+	private OpenCoverSensorBase sensor;
 	@Mock private Project module;
 	@Mock private SensorContext context;
 	@Mock private TestResultsBuilder testResultsBuilder;
@@ -39,7 +39,7 @@ public class SensorAnalyzeTest {
 	public void before() {
 		org.mockito.MockitoAnnotations.initMocks(this);	
 
-		sensor = new OpenCoverSensor(fileSystem,configuration,cache,runner, 
+		sensor = new OpenCoverSensorBase(fileSystem,configuration,cache,runner, 
 				testResultsBuilder, testResultsSaver,coverageReader,coverageSaver,microsoftWindowsEnvironment);
 	}
 	

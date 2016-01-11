@@ -52,7 +52,7 @@ import com.stevpet.sonar.plugins.dotnet.utils.vstowrapper.MicrosoftWindowsEnviro
  * @author stevpet
  * 
  */
-public class OpenCoverSensor implements Sensor {
+public class OpenCoverSensorBase implements Sensor {
 
 	private MsCoverConfiguration configuration;
 	private UnitTestCache cache;
@@ -64,7 +64,7 @@ public class OpenCoverSensor implements Sensor {
 	private VsTestTestResultsSaverBase testResultsSaver;
 	private MicrosoftWindowsEnvironment microsoftWindowsEnvironment;
 
-	public OpenCoverSensor(FileSystem fileSystem,
+	public OpenCoverSensorBase(FileSystem fileSystem,
 			MsCoverConfiguration configuration,
 			UnitTestCache unitTestBatchData, TestRunner testRunner,
 			TestResultsBuilder testResultsBuilder,
@@ -84,7 +84,7 @@ public class OpenCoverSensor implements Sensor {
 	}
 
 	private static final Logger LOG = LoggerFactory
-			.getLogger(OpenCoverSensor.class);
+			.getLogger(OpenCoverSensorBase.class);
 
 	@Override
 	public boolean shouldExecuteOnProject(Project project) {
