@@ -52,7 +52,7 @@ import com.stevpet.sonar.plugins.dotnet.utils.vstowrapper.MicrosoftWindowsEnviro
  * @author stevpet
  * 
  */
-public class OpenCoverSensor implements Sensor, BatchExtension {
+public class OpenCoverSensor implements Sensor {
 
 	private MsCoverConfiguration configuration;
 	private UnitTestCache cache;
