@@ -10,14 +10,14 @@ import com.stevpet.sonar.plugins.dotnet.mscover.coveragesaver.defaultsaver.OpenC
 import com.stevpet.sonar.plugins.dotnet.mscover.testresultsbuilder.defaulttestresultsbuilder.SpeFlowTestResultsBuilder;
 import com.stevpet.sonar.plugins.dotnet.mscover.testresultssaver.VsTestTestResultsSaver;
 import com.stevpet.sonar.plugins.dotnet.mscover.testrunner.opencover.OpenCoverCoverageRunner;
-import com.stevpet.sonar.plugins.dotnet.mscover.workflow.UnitTestCache;
+import com.stevpet.sonar.plugins.dotnet.mscover.workflow.TestCache;
 import com.stevpet.sonar.plugins.dotnet.utils.vstowrapper.MicrosoftWindowsEnvironment;
 
 public class OpenCoverUnitTestSensor extends OpenCoverSensorBase {
 
 	public OpenCoverUnitTestSensor(FileSystem fileSystem,
 			MsCoverConfiguration msCoverConfiguration,
-			UnitTestCache unitTestBatchData, 
+			TestCache unitTestBatchData, 
 			CoverageSaver coverageSaver,
 			MicrosoftWindowsEnvironment microsoftWindowsEnvironment, PathResolver pathResolver) {
 		super(fileSystem, msCoverConfiguration, unitTestBatchData, 

@@ -26,7 +26,6 @@ import java.io.File;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.api.BatchExtension;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.batch.fs.FileSystem;
@@ -40,7 +39,7 @@ import com.stevpet.sonar.plugins.dotnet.mscover.testresultsbuilder.ProjectUnitTe
 import com.stevpet.sonar.plugins.dotnet.mscover.testresultsbuilder.TestResultsBuilder;
 import com.stevpet.sonar.plugins.dotnet.mscover.testresultssaver.VsTestTestResultsSaverBase;
 import com.stevpet.sonar.plugins.dotnet.mscover.testrunner.TestRunner;
-import com.stevpet.sonar.plugins.dotnet.mscover.workflow.UnitTestCache;
+import com.stevpet.sonar.plugins.dotnet.mscover.workflow.TestCache;
 import com.stevpet.sonar.plugins.dotnet.utils.vstowrapper.MicrosoftWindowsEnvironment;
 
 /**
@@ -55,7 +54,7 @@ import com.stevpet.sonar.plugins.dotnet.utils.vstowrapper.MicrosoftWindowsEnviro
 public class OpenCoverSensorBase implements Sensor {
 
 	private MsCoverConfiguration configuration;
-	private UnitTestCache cache;
+	private TestCache cache;
 	private TestRunner testRunner;
 	private FileSystem fileSystem;
 	private CoverageReader reader;
@@ -66,7 +65,7 @@ public class OpenCoverSensorBase implements Sensor {
 
 	public OpenCoverSensorBase(FileSystem fileSystem,
 			MsCoverConfiguration configuration,
-			UnitTestCache unitTestBatchData, TestRunner testRunner,
+			TestCache unitTestBatchData, TestRunner testRunner,
 			TestResultsBuilder testResultsBuilder,
 			VsTestTestResultsSaverBase testResultsSaver,
 			CoverageReader coverageReader, CoverageSaver coverageSaver,
@@ -97,7 +96,7 @@ public class OpenCoverSensorBase implements Sensor {
 		File testResultsFile;
 		File coverageFile;
 		SonarCoverage sonarCoverage;
-		if (!cache.hasRun()) {
+		if (!cache.gatHasRun()) {
 			coverageFile = new File(fileSystem.workDir(), "coverage.xml");
 			testRunner.setCoverageFile(coverageFile);
 			testRunner.execute();

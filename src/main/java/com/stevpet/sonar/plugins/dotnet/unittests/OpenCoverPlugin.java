@@ -6,7 +6,7 @@ import java.util.List;
 import org.sonar.api.SonarPlugin;
 
 import com.stevpet.sonar.plugins.dotnet.mscover.DefaultMsCoverConfiguration;
-import com.stevpet.sonar.plugins.dotnet.mscover.workflow.DefaultUnitTestCache;
+import com.stevpet.sonar.plugins.dotnet.mscover.workflow.UnitTestCache;
 import com.stevpet.sonar.plugins.dotnet.utils.vstowrapper.implementation.DefaultMicrosoftWindowsEnvironment;
 
 public class OpenCoverPlugin extends SonarPlugin {
@@ -16,7 +16,7 @@ public class OpenCoverPlugin extends SonarPlugin {
         List exported=Arrays.asList(
         		DefaultMicrosoftWindowsEnvironment.class,
         		DefaultMsCoverConfiguration.class,       		
-                DefaultUnitTestCache.class,     		
+                UnitTestCache.class,     		
                 OpenCoverUnitTestSensor.class
                 );
    
