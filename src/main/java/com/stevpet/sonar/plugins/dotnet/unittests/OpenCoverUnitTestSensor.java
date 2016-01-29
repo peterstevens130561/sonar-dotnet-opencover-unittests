@@ -45,6 +45,7 @@ import com.stevpet.sonar.plugins.dotnet.mscover.testresultssaver.VsTestTestResul
 import com.stevpet.sonar.plugins.dotnet.mscover.testresultssaver.VsTestTestResultsSaverBase;
 import com.stevpet.sonar.plugins.dotnet.mscover.testrunner.TestRunner;
 import com.stevpet.sonar.plugins.dotnet.mscover.testrunner.opencover.DefaultOpenCoverTestRunner;
+import com.stevpet.sonar.plugins.dotnet.mscover.vstest.results.VsTestEnvironment;
 import com.stevpet.sonar.plugins.dotnet.mscover.workflow.TestCache;
 import com.stevpet.sonar.plugins.dotnet.utils.vstowrapper.MicrosoftWindowsEnvironment;
 
@@ -109,14 +110,15 @@ public class OpenCoverUnitTestSensor implements Sensor {
 	 * @param coverageSaver
 	 * @param microsoftWindowsEnvironment
 	 * @param pathResolver
+	 * @param vsTestEnvironment 
 	 */
 	public OpenCoverUnitTestSensor(FileSystem fileSystem,
 			MsCoverConfiguration msCoverConfiguration,
 			TestCache unitTestBatchData, 
 			CoverageSaver coverageSaver,
-			MicrosoftWindowsEnvironment microsoftWindowsEnvironment, PathResolver pathResolver) {
+			MicrosoftWindowsEnvironment microsoftWindowsEnvironment, PathResolver pathResolver, VsTestEnvironment vsTestEnvironment) {
 		this(fileSystem, msCoverConfiguration, unitTestBatchData, 
-				DefaultOpenCoverTestRunner.create(msCoverConfiguration, microsoftWindowsEnvironment, fileSystem),
+				DefaultOpenCoverTestRunner.create(msCoverConfiguration, microsoftWindowsEnvironment, fileSystem,vsTestEnvironment),
 				new SpeFlowTestResultsBuilder(microsoftWindowsEnvironment), 
 				new VsTestTestResultsSaver(pathResolver,fileSystem), 
 				new OpenCoverCoverageReader(msCoverConfiguration), 
@@ -149,8 +151,8 @@ public class OpenCoverUnitTestSensor implements Sensor {
 			cache.setHasRun(coverageFile, testResultsFile);
 		} else {
 			sonarCoverage = cache.getSonarCoverage();
-			testResultsFile = cache.getTestResults();
-			coverageFile = cache.getTestCoverage();
+			testResultsFile = cache.getTestResultsFile();
+			coverageFile = cache.getTestCoverageFile();
 		}
 
 		coverageSaver.save(context, sonarCoverage);

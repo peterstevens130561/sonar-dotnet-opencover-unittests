@@ -47,8 +47,8 @@ public class SensorAnalyzeTest {
 	public void test() {
 		when(fileSystem.workDir()).thenReturn(new File("workdir"));
 		when(runner.getTestResultsFile()).thenReturn(new File("testresults"));
-		when(cache.getTestCoverage()).thenReturn(new File("coverage"));
-		when(cache.getTestResults()).thenReturn(new File("testResults"));
+		when(cache.getTestCoverageFile()).thenReturn(new File("coverage"));
+		when(cache.getTestResultsFile()).thenReturn(new File("testResults"));
 		sensor.analyse(module, context);
 	}
 }
