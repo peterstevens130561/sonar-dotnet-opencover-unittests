@@ -40,11 +40,11 @@ import com.stevpet.sonar.plugins.dotnet.mscover.coveragesaver.defaultsaver.OpenC
 import com.stevpet.sonar.plugins.dotnet.mscover.model.sonar.SonarCoverage;
 import com.stevpet.sonar.plugins.dotnet.mscover.testresultsbuilder.ProjectUnitTestResults;
 import com.stevpet.sonar.plugins.dotnet.mscover.testresultsbuilder.TestResultsBuilder;
-import com.stevpet.sonar.plugins.dotnet.mscover.testresultsbuilder.defaulttestresultsbuilder.SpeFlowTestResultsBuilder;
+import com.stevpet.sonar.plugins.dotnet.mscover.testresultsbuilder.defaulttestresultsbuilder.SpecFlowTestResultsBuilder;
 import com.stevpet.sonar.plugins.dotnet.mscover.testresultssaver.VsTestTestResultsSaver;
-import com.stevpet.sonar.plugins.dotnet.mscover.testresultssaver.VsTestTestResultsSaverBase;
 import com.stevpet.sonar.plugins.dotnet.mscover.testrunner.TestRunner;
 import com.stevpet.sonar.plugins.dotnet.mscover.testrunner.opencover.DefaultOpenCoverTestRunner;
+import com.stevpet.sonar.plugins.dotnet.mscover.testrunner.opencover.OpenCoverTestRunner;
 import com.stevpet.sonar.plugins.dotnet.mscover.vstest.results.VsTestEnvironment;
 import com.stevpet.sonar.plugins.dotnet.mscover.workflow.TestCache;
 import com.stevpet.sonar.plugins.dotnet.utils.vstowrapper.MicrosoftWindowsEnvironment;
@@ -60,14 +60,15 @@ import com.stevpet.sonar.plugins.dotnet.utils.vstowrapper.MicrosoftWindowsEnviro
  */
 public class OpenCoverUnitTestSensor implements Sensor {
 
+	private Logger Log = LoggerFactory.getLogger(OpenCoverUnitTestSensor.class);
 	private MsCoverConfiguration configuration;
 	private TestCache cache;
-	private TestRunner testRunner;
+	private OpenCoverTestRunner testRunner;
 	private FileSystem fileSystem;
 	private CoverageReader reader;
 	private CoverageSaver coverageSaver;
 	private TestResultsBuilder testResultsBuilder;
-	private VsTestTestResultsSaverBase testResultsSaver;
+	private VsTestTestResultsSaver testResultsSaver;
 	private MicrosoftWindowsEnvironment microsoftWindowsEnvironment;
 
 	/**
@@ -85,9 +86,9 @@ public class OpenCoverUnitTestSensor implements Sensor {
 	 */
 	public OpenCoverUnitTestSensor(FileSystem fileSystem,
 			MsCoverConfiguration configuration,
-			TestCache unitTestBatchData, TestRunner testRunner,
+			TestCache unitTestBatchData, OpenCoverTestRunner testRunner,
 			TestResultsBuilder testResultsBuilder,
-			VsTestTestResultsSaverBase testResultsSaver,
+			VsTestTestResultsSaver testResultsSaver,
 			CoverageReader coverageReader, CoverageSaver coverageSaver,
 			MicrosoftWindowsEnvironment microsoftWindowsEnvironment) {
 		this.fileSystem = fileSystem;
@@ -115,18 +116,18 @@ public class OpenCoverUnitTestSensor implements Sensor {
 	public OpenCoverUnitTestSensor(FileSystem fileSystem,
 			MsCoverConfiguration msCoverConfiguration,
 			TestCache unitTestBatchData, 
-			CoverageSaver coverageSaver,
-			MicrosoftWindowsEnvironment microsoftWindowsEnvironment, PathResolver pathResolver, VsTestEnvironment vsTestEnvironment) {
+			MicrosoftWindowsEnvironment microsoftWindowsEnvironment, 
+			PathResolver pathResolver, 
+			VsTestEnvironment vsTestEnvironment) {
 		this(fileSystem, msCoverConfiguration, unitTestBatchData, 
 				DefaultOpenCoverTestRunner.create(msCoverConfiguration, microsoftWindowsEnvironment, fileSystem,vsTestEnvironment),
-				new SpeFlowTestResultsBuilder(microsoftWindowsEnvironment), 
-				new VsTestTestResultsSaver(pathResolver,fileSystem), 
+				SpecFlowTestResultsBuilder.create(microsoftWindowsEnvironment), 
+				VsTestTestResultsSaver.create(pathResolver,fileSystem), 
 				new OpenCoverCoverageReader(msCoverConfiguration), 
 				new OpenCoverCoverageSaver(microsoftWindowsEnvironment,pathResolver,fileSystem),
 				microsoftWindowsEnvironment);
 	}
-	private static final Logger LOG = LoggerFactory
-			.getLogger(OpenCoverUnitTestSensor.class);
+
 
 	@Override
 	public boolean shouldExecuteOnProject(Project project) {
@@ -139,9 +140,11 @@ public class OpenCoverUnitTestSensor implements Sensor {
 		File testResultsFile;
 		File coverageFile;
 		SonarCoverage sonarCoverage;
+		Log.debug("module {}",module.getName());
 		if (!cache.gatHasRun()) {
 			coverageFile = new File(fileSystem.workDir(), "coverage.xml");
 			testRunner.setCoverageFile(coverageFile);
+			testRunner.onlyReportAssembliesOfTheSolution();
 			testRunner.execute();
 			testResultsFile = testRunner.getTestResultsFile();
 
@@ -160,6 +163,7 @@ public class OpenCoverUnitTestSensor implements Sensor {
 		if (testResultsFile != null) {
 			ProjectUnitTestResults testResults = testResultsBuilder.parse(
 					testResultsFile, coverageFile);
+			Log.debug("test results read {}",testResults.getTests());
 			testResultsSaver.save(context, testResults);
 		}
 	}
