@@ -132,15 +132,15 @@ public class OpenCoverUnitTestSensor implements Sensor {
 	@Override
 	public boolean shouldExecuteOnProject(Project project) {
 		return project.isModule() && configuration.runOpenCover()
-				&& microsoftWindowsEnvironment.hasUnitTestSourceFiles();
+				&& microsoftWindowsEnvironment.hasUnitTestSourceFiles() ;
 	}
 
 	@Override
-	public void analyse(Project module, SensorContext context) {
+	public void analyse(Project project, SensorContext context) {
 		File testResultsFile;
 		File coverageFile;
 		SonarCoverage sonarCoverage;
-		Log.debug("module {}",module.getName());
+		Log.debug("project {}",project.getName());
 		if (!cache.gatHasRun()) {
 			coverageFile = new File(fileSystem.workDir(), "coverage.xml");
 			testRunner.setCoverageFile(coverageFile);
@@ -160,7 +160,7 @@ public class OpenCoverUnitTestSensor implements Sensor {
 
 		coverageSaver.save(context, sonarCoverage);
 
-		if (testResultsFile != null) {
+		if (testResultsFile != null && microsoftWindowsEnvironment.isUnitTestProject(project)) {
 			ProjectUnitTestResults testResults = testResultsBuilder.parse(
 					testResultsFile, coverageFile);
 			Log.debug("test results read {}",testResults.getTests());
